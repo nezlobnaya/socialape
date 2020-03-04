@@ -21,3 +21,21 @@ exports.getScreams = functions.https.onRequest((req, res) => {
         })
         .catch(err => console.error(err))
 })
+
+exports.createScream = functions.https.onRequest((req, res) => {
+    const newScream = {
+        body: req.body.body,
+        userHandle: req.body.userHandle,
+        createdAt: admin.firestore.Timestamp.fromDate(new Date())
+    };
+    admin.firestore()
+        .collection('screams')
+        .add(newScream)
+        .then(doc => {
+            res.json({message: `document ${doc.id} created successfully`})
+        })
+        .catch(err => {
+            res.status(500).json({ error: 'something went wrong!'})
+            console.error('New scream error',err)
+        });
+});
