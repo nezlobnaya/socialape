@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "socialape-c71ad"
+    "default": "socialape-c71ad",
+    "staging": "socialape-c71ad"
   }
 }
