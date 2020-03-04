@@ -1,6 +1,5 @@
 const functions = require('firebase-functions');
 const admin = require('firebase-admin')
-<<<<<<< HEAD
 const firebase = require('firebase')
 const express = require('express');
 const app = express()
@@ -22,14 +21,6 @@ const config = {
 
 
 firebase.initializeApp(config)
-=======
-
-admin.initializeApp();
-
-const express = require('express');
-const app = express()
-
->>>>>>> parent of d1c5ac7... user authentification added
 
 app.get('/screams', (req, res) => {
     admin
@@ -67,5 +58,23 @@ app.post('/scream', (req, res) => {
             console.error('New scream error',err)
         });
 });
+
+app.post('/signup', (req, res) => {
+    const newUser = {
+        email: req.body.email,
+        password: req.body.password,
+        confirmPassword: req.body.confirmPassword,
+        handle: req.body.handle
+    }
+    //validate data
+ firebase.auth().createUserWithEmailAndPassword(newUser.email, newUser.password)
+    .then(data => {
+        return res.status(201).json({ message: `user ${data.user.uid} signed up successfully!`})
+    })
+    .catch(err => {
+        console.error(err)
+        return res.status(500).json({ error: err.code })
+    })
+})
 
 exports.api = functions.https.onRequest(app);
